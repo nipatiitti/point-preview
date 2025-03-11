@@ -1,14 +1,25 @@
 <script lang="ts">
-	import BaseMap from '$lib/features/map/BaseMap.svelte';
+  import Hud from '$lib/features/hud/Hud.svelte'
+  import BaseMap from '$lib/features/map/BaseMap.svelte'
+  import ClickedMarker from '$lib/features/map/ClickedMarker.svelte'
+  import HoverLine from '$lib/features/map/HoverLine.svelte'
+  import Points from '$lib/features/map/Points.svelte'
+  import { points } from '$lib/state/points.svelte'
 </script>
 
+<Hud />
+
 <main class="map-container">
-	<BaseMap></BaseMap>
+  <BaseMap>
+    <Points {points} />
+    <HoverLine />
+    <ClickedMarker />
+  </BaseMap>
 </main>
 
 <style>
-	.map-container {
-		height: 100vh;
-		width: 100vw;
-	}
+  .map-container {
+    height: 100vh;
+    width: 100vw;
+  }
 </style>

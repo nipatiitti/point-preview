@@ -3,4 +3,5 @@ export type Point = {
 	lng: number;
 	height: number;
 	name: string;
+	id: string;
 };
