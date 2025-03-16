@@ -1,12 +1,11 @@
 <script lang="ts">
+  import type { Mast } from '$lib/api/masts'
   import { clickedMarker } from '$lib/state/clickableMarker.svelte'
-  import { hoveringPoint, points } from '$lib/state/points.svelte'
-  import type { Point } from '$lib/types/data'
+  import { features } from '$lib/state/features.svelte'
   import { distance } from '$lib/utils/distance'
-  import type { LngLat } from 'maplibre-gl'
 
   let open = $derived(!!clickedMarker.point)
-  let distances = $state<Map<Point, number>>(new Map())
+  let distances = $state<Map<Mast, number>>(new Map())
   let sorted = $derived(Array.from(distances.entries()).sort((a, b) => a[1] - b[1]))
   let loading = $state(false)
 
@@ -16,10 +15,10 @@
 
     const calculate = async () => {
       if (!clickedMarker.point) return
-      const newDistances = new Map<Point, number>()
+      const newDistances = new Map<Mast, number>()
 
-      for (const point of points) {
-        const d = distance(clickedMarker.point, { lng: point.lng, lat: point.lat } as LngLat)
+      for (const point of features.points) {
+        const d = distance(clickedMarker.point, point.geometry.coordinates)
         newDistances.set(point, d)
       }
 
@@ -46,12 +45,8 @@
     {:else}
       <ul class="space-y-2">
         {#each sorted as [point, d] (point)}
-          <li
-            class="flex justify-between hover:bg-blue-200 p-2 rounded"
-            onmouseenter={() => (hoveringPoint.point = { lng: point.lng, lat: point.lat } as LngLat)}
-            onmouseleave={() => (hoveringPoint.point = null)}
-          >
-            <span class="font-bold"> {point.name}</span>
+          <li class="flex justify-between hover:bg-blue-200 p-2 rounded">
+            <span class="font-bold"> {point.properties.mtk_id}</span>
             <span>{d.toFixed(2)} km</span>
           </li>
         {/each}

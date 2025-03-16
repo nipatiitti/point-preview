@@ -1,3 +1,1 @@
-import type { LngLat } from 'maplibre-gl'
-
-export const clickedMarker = $state<{ point: LngLat | null }>({ point: null })
+export const clickedMarker = $state<{ point: [number, number] | null }>({ point: null })

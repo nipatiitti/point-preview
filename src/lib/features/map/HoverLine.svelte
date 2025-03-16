@@ -1,6 +1,6 @@
 <script lang="ts">
   import { clickedMarker } from '$lib/state/clickableMarker.svelte'
-  import { hoveringPoint } from '$lib/state/points.svelte'
+  import { hoveringPoint } from '$lib/state/features.svelte'
   import { GeoJSONSource, LineLayer } from 'svelte-maplibre-gl'
 
   let from = $derived(clickedMarker.point)

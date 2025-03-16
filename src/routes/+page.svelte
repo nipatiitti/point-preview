@@ -4,14 +4,13 @@
   import ClickedMarker from '$lib/features/map/ClickedMarker.svelte'
   import HoverLine from '$lib/features/map/HoverLine.svelte'
   import Points from '$lib/features/map/Points.svelte'
-  import { points } from '$lib/state/points.svelte'
 </script>
 
 <Hud />
 
 <main class="map-container">
   <BaseMap>
-    <Points {points} />
+    <Points />
     <HoverLine />
     <ClickedMarker />
   </BaseMap>
