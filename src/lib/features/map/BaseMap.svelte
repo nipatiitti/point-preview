@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PUBLIC_MAP_KEY } from '$env/static/public'
-  import { clickedMarker } from '$lib/state/clickableMarker.svelte'
+  import { marker } from '$lib/state/features.svelte'
   import { START_CENTER, START_ZOOM } from '$lib/utils/constants'
   import { toEPSG3067 } from '$lib/utils/transformations'
   import type { Map } from 'maplibre-gl'
@@ -35,7 +35,7 @@
   center={START_CENTER}
   attributionControl={false}
   onclick={(e) => {
-    clickedMarker.point = [e.lngLat.lng, e.lngLat.lat]
+    marker.point = [e.lngLat.lng, e.lngLat.lat]
   }}
 >
   {@render children?.()}
