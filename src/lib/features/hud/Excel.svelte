@@ -88,14 +88,25 @@
   {#if loading}
     <Icon icon="line-md:loading-loop" />
   {:else}
-    <label
-      for="file"
-      class="bg-emerald-200 p-2 rounded w-full cursor-pointer flex items-center gap-2 justify-center"
-      title="Upload"
-    >
-      {excelFeatures.data.length ? 'Vaihda' : 'Lisää'} excel tiedosto
-      <Icon icon="lets-icons:file-dock-add" />
-    </label>
-    <input id="file" type="file" accept=".xlsx,.xls,.xlsm,.xlsb" class="hidden" onchange={handleFileUpload} />
+    <div class="flex flex-row gap-2">
+      {#if excelFeatures.data.length}
+        <button
+          class="bg-emerald-200 p-2 rounded cursor-pointer flex items-center justify-center"
+          onclick={() => (excelFeatures.data = [])}
+          title="Tyhjennä excel data"
+        >
+          <Icon icon="lets-icons:close-round-light" />
+        </button>
+      {/if}
+      <label
+        for="file"
+        class="bg-emerald-200 p-2 rounded w-full cursor-pointer flex items-center gap-2 justify-center"
+        title="Upload"
+      >
+        {excelFeatures.data.length ? 'Vaihda' : 'Lisää'} excel tiedosto
+        <Icon icon="lets-icons:file-dock-add" />
+      </label>
+      <input id="file" type="file" accept=".xlsx,.xls,.xlsm,.xlsb" class="hidden" onchange={handleFileUpload} />
+    </div>
   {/if}
 </div>

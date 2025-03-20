@@ -17,6 +17,43 @@
   }
 
   let input = $state<HTMLInputElement>()
+
+  const finnishBBOX = [
+    [8.210371622418904, 58.911920440350315],
+    [44.878985984105526, 70.49740176331076]
+  ] // [lng, lat]
+
+  const onChange = (e: Event) => {
+    const value = (e.target as HTMLInputElement).value
+    const coords = value.split(',').map((c) => parseFloat(c)) as [number, number]
+    if (coords.length !== 2 || coords.some((c) => isNaN(c))) {
+      toast.error('Invalid coordinates')
+      return
+    }
+
+    // if the coordinates are outside of Finland, maybe the lng and lat are swapped
+    if (
+      coords[0] < finnishBBOX[0][0] ||
+      coords[0] > finnishBBOX[1][0] ||
+      coords[1] < finnishBBOX[0][1] ||
+      coords[1] > finnishBBOX[1][1]
+    ) {
+      coords.reverse()
+    }
+
+    // If the coords are still outside of Finland, show an error
+    if (
+      coords[0] < finnishBBOX[0][0] ||
+      coords[0] > finnishBBOX[1][0] ||
+      coords[1] < finnishBBOX[0][1] ||
+      coords[1] > finnishBBOX[1][1]
+    ) {
+      toast.error('Coordinates are outside of Finland')
+      return
+    }
+
+    marker.point = coords
+  }
 </script>
 
 {#if coords}
@@ -24,7 +61,7 @@
     <input
       type="text"
       value={coordsText}
-      readonly
+      onchange={onChange}
       class="w-full bg-blue-50 p-2 rounded"
       bind:this={input}
       onclick={() => input?.select()}

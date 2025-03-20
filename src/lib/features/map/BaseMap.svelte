@@ -23,6 +23,9 @@
 
       // BBOX in ESPG:3857
       console.log(bbox.map((coord) => toEPSG3067(coord)))
+
+      // BBOX in WSG84
+      console.log(bbox)
     }
   })
 </script>
