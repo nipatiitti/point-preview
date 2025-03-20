@@ -1,5 +1,6 @@
 <script lang="ts">
   import { marker } from '$lib/state/features.svelte'
+  import { map } from '$lib/state/map.svelte'
   import Icon from '@iconify/svelte'
   import toast from 'svelte-french-toast'
 
@@ -53,19 +54,27 @@
     }
 
     marker.point = coords
+
+    if (map.instance) {
+      map.instance.flyTo({
+        center: coords,
+        zoom: 12
+      })
+    }
   }
 </script>
 
-{#if coords}
-  <div class="bg-cyan-100 p-4 rounded shadow flex gap-2">
-    <input
-      type="text"
-      value={coordsText}
-      onchange={onChange}
-      class="w-full bg-blue-50 p-2 rounded"
-      bind:this={input}
-      onclick={() => input?.select()}
-    />
+<div class="bg-cyan-100 p-4 rounded shadow flex gap-2">
+  <input
+    type="text"
+    value={coordsText}
+    placeholder="No marker placed..."
+    onchange={onChange}
+    class="w-full bg-blue-50 p-2 rounded"
+    bind:this={input}
+    onclick={() => input?.select()}
+  />
+  {#if coords}
     <button
       class="bg-blue-200 p-2 rounded cursor-pointer flex items-center justify-center"
       onclick={copyCoords}
@@ -82,5 +91,5 @@
     >
       <Icon icon="lets-icons:external" />
     </a>
-  </div>
-{/if}
+  {/if}
+</div>
