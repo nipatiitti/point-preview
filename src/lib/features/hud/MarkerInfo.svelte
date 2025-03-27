@@ -5,7 +5,12 @@
   import toast from 'svelte-french-toast'
 
   let coords = $derived(marker.point)
-  let coordsText = $derived(coords?.map((c) => c.toFixed(6)).join(', ') ?? '')
+  let coordsText = $derived(
+    coords
+      ?.map((c) => c.toFixed(6))
+      .reverse()
+      .join(', ') ?? ''
+  )
 
   const copyCoords = async () => {
     try {

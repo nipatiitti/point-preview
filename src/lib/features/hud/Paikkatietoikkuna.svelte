@@ -16,10 +16,28 @@
 
     closestPoints.points = sorted.slice(0, 5)
   })
+
+  let csvToExport = $derived.by(() => {
+    if (!open) return
+
+    const points = closestPoints.points.map(([point, d]) => {
+      const dir = direction(marker.point!, point.geometry.coordinates)
+      const bearing = degToCompass(dir)
+      const distance = d.toFixed(2) + ' km'
+      return [point.properties.mtk_id, point.geometry.coordinates[1], point.geometry.coordinates[0], distance, bearing]
+    })
+
+    const csv = [['mtk_id', 'latitude', 'longitude', 'distance', 'bearing'], ...points]
+      .map((row) => row.join(','))
+      .join('\n')
+
+    const file = new Blob([csv], { type: 'text/csv' })
+    return URL.createObjectURL(file)
+  })
 </script>
 
 {#if open}
-  <div class="bg-sky-100 p-4 rounded shadow">
+  <div class="bg-sky-100 p-4 rounded shadow flex flex-col gap-2">
     <h2 class="text-lg font-bold">Paikkatietoikkunan <a href="/mast-data" class="underline">mastot</a></h2>
     <ul class="space-y-2">
       {#each closestPoints.points as [point, d], i (point)}
@@ -43,5 +61,16 @@
         </li>
       {/each}
     </ul>
+
+    {#if csvToExport}
+      <a
+        href={csvToExport}
+        download="closest-masts.csv"
+        class="bg-blue-200 p-2 rounded cursor-pointer flex items-center justify-center"
+        title="Lataa CSV-tiedostona paikkatietoikkunan lähimmät mastot"
+      >
+        Lataa CSV
+      </a>
+    {/if}
   </div>
 {/if}

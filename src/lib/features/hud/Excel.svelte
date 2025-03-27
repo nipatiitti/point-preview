@@ -57,6 +57,22 @@
 
     excelClosestPoints.points = sorted.slice(0, 5)
   })
+
+  let csvToExport = $derived.by(() => {
+    if (!excelClosestPoints.points.length) return
+
+    const points = excelClosestPoints.points.map(([point, d]) => {
+      const distance = d.toFixed(2) + ' km'
+      return [point.kohde, point.coordinates[1], point.coordinates[0], distance, point.sitehunter]
+    })
+
+    const csv = [['kohde', 'latitude', 'longitude', 'distance', 'sitehunter'], ...points]
+      .map((row) => row.join(','))
+      .join('\n')
+
+    const file = new Blob([csv], { type: 'text/csv' })
+    return URL.createObjectURL(file)
+  })
 </script>
 
 <div class="bg-emerald-50 p-4 rounded shadow flex flex-col gap-2">
@@ -83,6 +99,17 @@
         </li>
       {/each}
     </ul>
+  {/if}
+
+  {#if csvToExport}
+    <a
+      href={csvToExport}
+      download="excel-data.csv"
+      class="bg-emerald-200 p-2 rounded cursor-pointer flex items-center justify-center"
+      title="Lataa CSV:nä lähimmät mastot excel datasta"
+    >
+      Lataa CSV
+    </a>
   {/if}
 
   {#if loading}
